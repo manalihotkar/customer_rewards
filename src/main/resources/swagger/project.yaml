@@ -1,0 +1,234 @@
+swagger: '2.0'
+info:
+  title: Reward API
+  description: Reward API description.
+  version: 1.0.0
+host: retailer.com
+basePath: /retailer/v1
+schemes:
+  - https
+paths:
+  /customer:
+    post:
+      summary: Post endpoint for Customer Details.
+      description: Adds Customer Details.
+      operationId: saveCustomer
+      parameters:
+       - name: trace-id
+         in: header
+         required: true
+         description: trace id of the request
+         type: number
+       - name: authorization
+         in: header
+         required: false
+         description: authorization token for each request
+         type: number
+       - name: session-id
+         in: header
+         required: false
+         description: session id of the session for tracking
+         type: number
+       - name: customer
+         in: body
+         required: true
+         description: request body for creating customer
+         schema:
+          $ref: '#/definitions/Customer'
+      produces:
+       - application/json
+      responses:
+       '200':
+         $ref: '#/definitions/Customer'
+       '500':
+         $ref: '#/definitions/Error'
+  /customer/reward/{customerIdentifier}:
+    get:
+      summary: Returns a reward points of Customer.
+      description: Returns a reward points of Customer.
+      operationId: retrieveReward
+      parameters:
+       - name: customerIdentifier
+         in: path
+         required: true
+         description: customer id of the customer
+         type: integer
+         format: int32
+       - name: trace-id
+         in: header
+         required: true
+         description: trace id of the request
+         type: number
+       - name: authorization
+         in: header
+         required: false
+         description: authorization token for each request
+         type: number
+       - name: session-id
+         in: header
+         required: false
+         description: session id of the session for tracking
+         type: number
+      produces:
+       - application/json
+      responses:
+       '200':
+         $ref: '#/definitions/Reward'
+  /customer/{customerIdentifier}:
+    get:
+      summary: Get endpoint for Customer Details.
+      description: Returns Customer Details.
+      operationId: customer
+      parameters:
+        - name: customerIdentifier
+          in: path
+          required: true
+          description: customer id of the customer
+          type: integer
+          format: int32
+        - name: trace-id
+          in: header
+          required: true
+          description: trace id of the request
+          type: number
+        - name: authorization
+          in: header
+          required: false
+          description: authorization token for each request
+          type: number
+        - name: session-id
+          in: header
+          required: false
+          description: session id of the session for tracking
+          type: number
+      produces:
+        - application/json
+      responses:
+        '200':
+          $ref: '#/definitions/Customer'
+        '500':
+          $ref: '#/definitions/Error'
+    put:
+      summary: Put endpoint for Customer Details.
+      description: Returns Customer Details.
+      operationId: updateCustomer
+      parameters:
+        - name: customerIdentifier
+          in: path
+          required: true
+          description: customer id of the customer
+          type: integer
+          format: int32
+        - name: trace-id
+          in: header
+          required: true
+          description: trace id of the request
+          type: number
+        - name: authorization
+          in: header
+          required: false
+          description: authorization token for each request
+          type: number
+        - name: session-id
+          in: header
+          required: false
+          description: session id of the session for tracking
+          type: number
+        - name: customer
+          in: body
+          required: true
+          description: request body for creating customer
+          schema:
+           $ref: '#/definitions/Customer'          
+      produces:
+        - application/json
+      responses:
+        '200':
+          $ref: '#/definitions/Customer'
+        '500':
+          $ref: '#/definitions/Error'          
+definitions:
+  RewardResponse:
+    type: object
+    properties:
+     reward-total:
+      type: number
+      description: Returns the total reward points for the customer 
+     order-total:
+      type: number
+      description: Returns the total order amount for the customer      
+     rewards:
+      type: array
+      items:
+       $ref: '#/definitions/Reward'
+  Reward:
+    type: object
+    properties:
+     reward-month:
+      type: string
+      description: Returns the reward month and year associated to the customer
+     monthly-order-total:
+      type: number
+      description: Returns the order total of the customer for each month      
+     reward-points:
+      type: number
+      description: Returns the reward points of the customer
+  MonthlyReward:
+    type: object
+    properties:
+     reward-month:
+      type: string
+      description: Returns the reward month and year associated to the customer
+     monthly-order-total:
+      type: number
+      description: Returns the order total of the customer for each month      
+     reward-points:
+      type: number
+      description: Returns the reward points of the customer
+     order:
+      type: array
+      items:
+       $ref: '#/definitions/Order'
+  Customer:
+    type: object
+    required:
+      - name
+      - email
+      - orderPrice
+    properties:
+      customerIdentifier:
+        type: integer
+        description: Returns the unique customer id
+      name:
+        type: string
+        description: Name of customer
+      email:
+        type: string
+        description: Email of Customer
+  Error:
+    type: object
+    properties:
+      code:
+        type: number
+        description: Returns the status error code
+      description:
+        type: string
+        description: Returns the error description
+  Order:
+    type: object
+    required:
+      - customerIdentifier
+      - orderPrice
+    properties:
+      orderIdentifier:
+        type: integer
+        description: Returns the unique order id
+      customerIdentifier:
+        type: integer
+        description: Returns the unique customer id
+      orderDate:
+        type: string
+        description: Order Date of Customer
+      orderPrice:
+        type: number
+        description: Returns the order price of the customer     
