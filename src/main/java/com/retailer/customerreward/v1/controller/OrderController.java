@@ -35,7 +35,7 @@ public class OrderController extends BaseController{
 	@PostMapping("/{customerIdentifier}/order")
 	public Order saveOrder(@Valid @RequestBody Order order, @PathVariable Integer customerIdentifier) throws Exception{
 		
-		if(validateOrderDetails(order)) {
+		if(customerIdentifier!= null && validateOrderDetails(order)) {
 			log.info("OrderController validation success for customer {}", customerIdentifier);
 			return orderService.saveOrder(order, customerIdentifier);
 		}else {
