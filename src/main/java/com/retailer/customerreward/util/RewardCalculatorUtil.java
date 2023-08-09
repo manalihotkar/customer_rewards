@@ -9,7 +9,7 @@ public class RewardCalculatorUtil {
 			rewardPoints = totalTransactionAmount.subtract(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(2));
 			rewardPoints = rewardPoints.add(BigDecimal.valueOf(50)); 
 		} else if (totalTransactionAmount.compareTo(BigDecimal.valueOf(50)) >= 0) {
-			rewardPoints = totalTransactionAmount.subtract(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(1));
+			rewardPoints = totalTransactionAmount.subtract(BigDecimal.valueOf(50)).multiply(BigDecimal.valueOf(1));
 		}
 		return rewardPoints;
 
